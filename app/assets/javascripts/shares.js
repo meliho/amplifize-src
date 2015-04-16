@@ -1,35 +1,35 @@
-var current_share = undefined;
-var shares = undefined;
+var current_share;
+var shares;
 var position = 0;
 var shares_unread = 0;
 
 var resetAppState = function () {
-	current_share = undefined;
+	current_share = null;
 	position = 0;
 };
 
-var toggleContentOrder = function() {
-	contentOrder = $("#toggleContentSelect").val();
+var toggleContentOrder = function () {
+	var contentOrder = $("#toggleContentSelect").val();
 
 	$.cookie("contentOrder", contentOrder);
 	updateSharesArray();
 };
 
-var toggleContentLayout = function() {
-	contentLayout = $("#toggleContentLayout").val();
+var toggleContentLayout = function () {
+	var contentLayout = $("#toggleContentLayout").val();
 
 	$.cookie("contentLayout", contentLayout);
 	updateSharesArray();
 };
 
-var toggleContentSort = function() {
-	contentSort = $("#toggleContentSort").val();
+var toggleContentSort = function () {
+	var contentSort = $("#toggleContentSort").val();
 	
 	$.cookie("contentSort", contentSort);
 	updateSharesArray();
 };
 
-var muteConversation = function() {
+var muteConversation = function () {
 	enableOverlay();
 	setReadState(2);
 	
@@ -55,7 +55,7 @@ var updateSharesArray = function() {
 			"content_sort" : contentSort,
 			"content_layout" : contentLayout
 		},
-		success: function(data, textStatus, jqXHR) {
+		success: function (data, textStatus, jqXHR) {
 			shares = data;
 			shares_unread = shares.length;
 			document.title = "Amplifize | Great conversation goes best with great content ("+shares_unread+")";
@@ -78,7 +78,7 @@ var updateSharesArray = function() {
 	});
 };
 
-var setReadState = function(readState) {
+var setReadState = function (readState) {
 	if(1 == readState) {
 		shares[position]["read_state"] = 1;
 
@@ -246,12 +246,8 @@ var openPost = function(shareId) {
 			var scrollNode = null;
 			for(var i = 0; i < data.comments.length; i++) {
 				var comment = data.comments[i];
-				var followsText = '';
-				if ($.inArray(comment.user.id, all_follows) == -1) {
-					followsText = ' (<span class="followUser_'+comment.user.id+'"><a href="" onclick="followUser('+comment.user.id+');return false;">Follow</a></span>)';
-				}
 				var username = null == comment.user.display_name ? comment.user.email : comment.user.display_name;
-				$('#popup_commentThread tr:last').after('<tr class="commentInstance"><td><p class="commentAuthor">'+username+followsText+' replied '+prettyDate(dateFormat(comment.created_at, "isoDateTime", false))+':</p></span><p class="commentText">'+comment.comment_text.split("\n").join("<br />")+'</p></td></tr>');
+				$('#popup_commentThread tr:last').after('<tr class="commentInstance"><td><p class="commentAuthor">'+username+' replied '+prettyDate(dateFormat(comment.created_at, "isoDateTime", false))+':</p></span><p class="commentText">'+comment.comment_text.split("\n").join("<br />")+'</p></td></tr>');
 				if(null === scrollNode && comment.created_at > shares[position]["last_updated_at"]) {
 					scrollNode = $("#popup_commentThread tr:last");
 				}
@@ -327,12 +323,8 @@ var updateShareContent = function(shareId) {
 				var scrollNode = null;
 				for(var i = 0; i < data.comments.length; i++) {
 					var comment = data.comments[i];
-					var followsText = '';
-					if ($.inArray(comment.user.id, all_follows) == -1) {
-						followsText = ' (<span class="followUser_'+comment.user.id+'"><a href="" onclick="followUser('+comment.user.id+');return false;">Follow</a></span>)';
-					}
 					var username = null == comment.user.display_name ? comment.user.email : comment.user.display_name;
-					$('#commentThread tr:last').after('<tr class="commentInstance"><td><p class="commentAuthor">'+username+followsText+' replied '+prettyDate(dateFormat(comment.created_at, "isoDateTime", false))+': </p></span><p class="commentText">'+comment.comment_text+'</p></td></tr>');
+					$('#commentThread tr:last').after('<tr class="commentInstance"><td><p class="commentAuthor">'+username+' replied '+prettyDate(dateFormat(comment.created_at, "isoDateTime", false))+': </p></span><p class="commentText">'+comment.comment_text+'</p></td></tr>');
 
 					if(null === scrollNode && comment.created_at > shares[position]["last_updated_at"]) {
 						scrollNode = $("#commentThread tr:last");

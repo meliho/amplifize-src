@@ -4,9 +4,6 @@
 
 <% content_for :javascripts do %>
 	<%= javascript_include_tag "shares", "jquery.selectbox-0.2.min", "pretty-date" %>
-	<script type="text/javascript">
-		var all_follows = <%= @all_follows %>;
-	</script>
 <% end %>
 
 <% content_for :subnav do %>

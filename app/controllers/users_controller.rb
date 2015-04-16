@@ -93,11 +93,6 @@ class UsersController < ApplicationController
 
   def conversations
     set_unread_counts
-
-    @all_follows = current_user.follows.map(&:follows)
-    @all_follows << current_user.id
-    @all_follows = @all_follows.to_json
-
     @comment = Comment.new
 
     render :file => 'users/reader/shares', :layout => 'reader_layout'

@@ -21,10 +21,6 @@ class SharesController < ApplicationController
     @posts_unread_count = current_user.feeds_unread_count
     @shares_unread_count = current_user.shares_unread_count
 
-    @all_follows = current_user.follows.map(&:follows)
-    @all_follows << current_user.id
-    @all_follows = @all_follows.to_json
-
     @comment = Comment.new
 
     render :layout => 'reader_layout'

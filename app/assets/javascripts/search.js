@@ -93,12 +93,8 @@ var openPost = function(shareId) {
 			var scrollNode = null;
 			for(var i = 0; i < data.comments.length; i++) {
 				var comment = data.comments[i];
-				var followsText = '';
-				if ($.inArray(comment.user.id, all_follows) == -1) {
-					followsText = ' (<span class="followUser_'+comment.user.id+'"><a href="" onclick="followUser('+comment.user.id+');return false;">Follow</a></span>)';
-				}
 				var username = null == comment.user.display_name ? comment.user.email : comment.user.display_name;
-				$('#popup_commentThread tr:last').after('<tr class="commentInstance"><td><p class="commentAuthor">'+username+followsText+' replied '+prettyDate(dateFormat(comment.created_at, "isoDateTime", false))+':</p></span><p class="commentText">'+comment.comment_text.split("\n").join("<br />")+'</p></td></tr>');
+				$('#popup_commentThread tr:last').after('<tr class="commentInstance"><td><p class="commentAuthor">'+username+' replied '+prettyDate(dateFormat(comment.created_at, "isoDateTime", false))+':</p></span><p class="commentText">'+comment.comment_text.split("\n").join("<br />")+'</p></td></tr>');
 			}
 
 			disableOverlay();
