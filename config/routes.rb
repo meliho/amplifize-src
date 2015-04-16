@@ -64,7 +64,8 @@ Amplifize::Application.routes.draw do
   match '/terms' => 'home#terms', :as => :terms
   match '/privacy' => 'home#privacy', :as => :privacy
 
-  resources :users, :user_sessions, :feeds, :posts, :shares, :comments, :tags, :invites, :password_resets
+  map.resources :password_resets, :only => [ :new, :create, :edit, :update ]
+  resources :users, :user_sessions, :feeds, :posts, :shares, :comments, :tags, :invites
 
   root :to => "home#index"
 

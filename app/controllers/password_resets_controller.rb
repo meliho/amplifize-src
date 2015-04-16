@@ -3,14 +3,13 @@ class PasswordResetsController < ApplicationController
   before_filter :load_user_using_perishable_token, :only => [:edit, :update]
   
   def new
-    @user_session = UserSession.new
   end
   
   def create
     @user = User.find_by_email(params[:email])  
     
     if @user  
-      @user.deliver_password_reset_instructions!  
+      @user.deliver_password_reset_instructions!
       redirect_to root_url
     else
       #TODO: Handle the error case here
@@ -19,7 +18,6 @@ class PasswordResetsController < ApplicationController
   end  
   
   def edit
-    @user_session = UserSession.new
   end
   
   def update  

@@ -12,9 +12,7 @@ function prettyDate(time){
 		day_diff = Math.floor(diff / 86400);
 			
 	if ( isNaN(day_diff) || day_diff < 0 || day_diff >= 11 ) {
-        var months = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
-];
+        var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         var day = time.getDate();
         var month = time.getMonth() + 1;
         var yy = time.getYear();
