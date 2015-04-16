@@ -246,9 +246,17 @@ var openPost = function(shareId) {
 			var scrollNode = null;
 			for(var i = 0; i < data.comments.length; i++) {
 				var comment = data.comments[i];
+
+                var editText = "";
+                if(comment.user.id == 0) {
+                    editText = "<a href=\"#editComment-modal-content\" data-toggle=\"modal\">Edit comment</a>";
+                }
+
 				var username = null == comment.user.display_name ? comment.user.email : comment.user.display_name;
-				$('#popup_commentThread tr:last').after('<tr class="commentInstance"><td><p class="commentAuthor">'+username+' replied '+prettyDate(dateFormat(comment.created_at, "isoDateTime", false))+':</p></span><p class="commentText">'+comment.comment_text.split("\n").join("<br />")+'</p></td></tr>');
-				if(null === scrollNode && comment.created_at > shares[position]["last_updated_at"]) {
+
+                $('#popup_commentThread tr:last').after('<tr class="commentInstance"><td><p class="commentAuthor">'+username+' replied '+prettyDate(dateFormat(comment.created_at, "isoDateTime", false))+': ('+editText+')</p></span><p class="commentText">'+comment.comment_text.split("\n").join("<br />")+'</p></td></tr>');
+
+                if(null === scrollNode && comment.created_at > current_share.updated_at) {
 					scrollNode = $("#popup_commentThread tr:last");
 				}
 			}
@@ -326,7 +334,7 @@ var updateShareContent = function(shareId) {
 					var username = null == comment.user.display_name ? comment.user.email : comment.user.display_name;
 					$('#commentThread tr:last').after('<tr class="commentInstance"><td><p class="commentAuthor">'+username+' replied '+prettyDate(dateFormat(comment.created_at, "isoDateTime", false))+': </p></span><p class="commentText">'+comment.comment_text+'</p></td></tr>');
 
-					if(null === scrollNode && comment.created_at > shares[position]["last_updated_at"]) {
+					if(null === scrollNode && comment.created_at > current_share.updated_at) {
 						scrollNode = $("#commentThread tr:last");
 					}
 				}
