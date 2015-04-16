@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.11'
+gem 'rails', '3.2.18'
 gem 'mysql2', '0.3.14'
 gem 'jquery-rails'
 gem 'thinking-sphinx'
@@ -21,7 +21,7 @@ gem 'jbuilder'
 
 # To use debugger
 group :development, :test do
-  gem 'debugger'
+#  gem 'debugger'
   gem "query_reviewer", :github => "nesquena/query_reviewer"
 end
 

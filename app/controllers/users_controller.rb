@@ -24,7 +24,7 @@ class UsersController < ApplicationController
         Mailer.delay(:queue => 'mail').new_user_email(@user)
 
         UserSession.create(@user)
-        format.html { redirect_to(:onboarding_step_1) }
+        format.html { redirect_to(:homepage) }
       else
         format.html { redirect_to(:new_user) }
       end
