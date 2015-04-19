@@ -27,10 +27,10 @@ class Post < ActiveRecord::Base
     if feed.feed_type != Feed::FEED_TYPE_RSS
       return
     end
-    
+
     feed_status_code = Feed::FEED_STATUS_OK
     feed_status_message = nil
-    
+
     options = {}
     options[:max_redirects] = 5
     options[:timeout] = 15
@@ -39,15 +39,16 @@ class Post < ActiveRecord::Base
       if not exception.nil? 
         feed_status_message = exception.message
       end
+
       feed_status_code = Feed::FEED_STATUS_ERROR 
-      puts "ERROR [#{response_code}]:  #{feed_status_message}"
+      Rails.logger.info "ERROR [#{response_code}]:  #{feed_status_message}"
     }
-    
+
     if not feed.last_update_date.nil? then
       options[:if_modified_since] = feed.last_update_date
     end
 
-    rss_feed = Feedzirra::Feed.fetch_and_parse(feed.url, options)
+    rss_feed = Feedjira::Feed.fetch_and_parse(feed.url, options)
 
     if not rss_feed.nil? and not rss_feed.is_a? Fixnum then
       add_entries(rss_feed.entries, feed.id)
@@ -56,13 +57,13 @@ class Post < ActiveRecord::Base
       feed.description = rss_feed.description.nil? ? '' : rss_feed.description
     end
 
-
     feed.status = feed_status_code
     feed.last_update_date = Time.now.utc.to_s(:db)
+
     # Calculate next update time for feeds
     feed.calculate_next_update
     feed.save
-    
+
     # Check if feed status list needs to be updated to reflect current status
     FeedStatus.update_status(feed,feed_status_code,feed_status_message)
   end
