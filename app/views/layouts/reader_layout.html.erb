@@ -10,6 +10,7 @@
     	$.ajaxSettings.dataType = "json";
     
     	//application state
+		var currentUserId = <%= current_user.id %>;
     	var contentOrder = $.cookie("contentOrder") ? $.cookie("contentOrder") : "newestFirst";
     	var contentLayout = $.cookie("contentLayout") ? $.cookie("contentLayout") : "postView";
     	var contentSort = $.cookie("contentSort") ? $.cookie("contentSort") : "unreadOnly";
