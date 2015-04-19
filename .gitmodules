@@ -1,6 +1,3 @@
-[submodule "vendor/feedzirra"]
-	path = vendor/feedzirra
-	url = git@github.com:Amplifize/feedzirra.git
 [submodule "vendor/opml"]
 	path = vendor/opml
 	url = git@github.com:Amplifize/opml.git
