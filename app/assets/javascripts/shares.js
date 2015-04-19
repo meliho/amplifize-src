@@ -331,10 +331,10 @@ var updateShareContent = function(shareId) {
 				for(var i = 0; i < data.comments.length; i++) {
 					var comment = data.comments[i];
 					
+    				var editText = "";
 	                if(comment.user.id == currentUserId) {
 	                    editText = "<a href=\"#\" onclick=\"editComment("+comment.id+")\"data-toggle=\"modal\">Edit comment</a>";
 	                }
-					
 					
 					var username = null == comment.user.display_name ? comment.user.email : comment.user.display_name;
 					$('#commentThread tr:last').after('<tr class="commentInstance"><td><p class="commentAuthor">'+username+' replied '+prettyDate(dateFormat(comment.created_at, "isoDateTime", false))+': '+editText+'</p></span><p id="comment'+comment.id+'_text" class="commentText">'+comment.comment_text.split("\n").join("<br />")+'</p></td></tr>');
