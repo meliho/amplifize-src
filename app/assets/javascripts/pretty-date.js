@@ -11,8 +11,15 @@ function prettyDate(time){
 		diff = (((new Date()).getTime() - date.getTime()) / 1000),
 		day_diff = Math.floor(diff / 86400);
 			
-	if ( isNaN(day_diff) || day_diff < 0 || day_diff >= 31 )
-		return "over a month ago";
+	if ( isNaN(day_diff) || day_diff < 0 || day_diff >= 11 ) {
+        var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        var day = date.getDate();
+        var month = date.getMonth();
+        var yy = date.getYear();
+        var year = (yy < 1000) ? yy + 1900 : yy;
+        
+        return months[month] + " " + day + ", " + year;
+    }
 			
 	return day_diff == 0 && (
 			diff < 60 && "just now" ||
@@ -21,6 +28,5 @@ function prettyDate(time){
 			diff < 7200 && "1 hour ago" ||
 			diff < 86400 && Math.floor( diff / 3600 ) + " hours ago") ||
 		day_diff == 1 && "Yesterday" ||
-		day_diff < 7 && day_diff + " days ago" ||
-		day_diff < 31 && Math.ceil( day_diff / 7 ) + " weeks ago";
+		day_diff < 10 && day_diff + " days ago";
 }

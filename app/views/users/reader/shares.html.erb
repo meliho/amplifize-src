@@ -4,9 +4,6 @@
 
 <% content_for :javascripts do %>
 	<%= javascript_include_tag "shares", "jquery.selectbox-0.2.min", "pretty-date" %>
-	<script type="text/javascript">
-		var all_follows = <%= @all_follows %>;
-	</script>
 <% end %>
 
 <% content_for :subnav do %>
@@ -91,6 +88,16 @@
 	</div>
 	<div class="modal-body modal-body-style">
 		<%= render 'comments/form' %>
+	</div>
+</div>
+
+<div id="editComment-modal-content" class="modal hide" style="z-index:2000;">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">×</button>
+		<h3>Edit your comment</h3>
+	</div>
+	<div class="modal-body modal-body-style">
+		<%= render 'comments/edit' %>
 	</div>
 </div>
 

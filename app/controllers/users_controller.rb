@@ -24,7 +24,7 @@ class UsersController < ApplicationController
         Mailer.delay(:queue => 'mail').new_user_email(@user)
 
         UserSession.create(@user)
-        format.html { redirect_to(:onboarding_step_1) }
+        format.html { redirect_to(:homepage) }
       else
         format.html { redirect_to(:new_user) }
       end
@@ -93,11 +93,6 @@ class UsersController < ApplicationController
 
   def conversations
     set_unread_counts
-
-    @all_follows = current_user.follows.map(&:follows)
-    @all_follows << current_user.id
-    @all_follows = @all_follows.to_json
-
     @comment = Comment.new
 
     render :file => 'users/reader/shares', :layout => 'reader_layout'

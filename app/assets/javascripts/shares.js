@@ -1,5 +1,5 @@
-var current_share = undefined;
-var shares = undefined;
+var current_share;
+var shares;
 var position = 0;
 var shares_unread = 0;
 
@@ -22,32 +22,32 @@ var hideFlyOut = function () {
 };
 
 var resetAppState = function () {
-	current_share = undefined;
+	current_share = null;
 	position = 0;
 };
 
-var toggleContentOrder = function() {
+var toggleContentOrder = function () {
 	contentOrder = $("#toggleContentSelect").val();
 
 	$.cookie("contentOrder", contentOrder);
 	updateSharesArray();
 };
 
-var toggleContentLayout = function() {
+var toggleContentLayout = function () {
 	contentLayout = $("#toggleContentLayout").val();
 
 	$.cookie("contentLayout", contentLayout);
 	updateSharesArray();
 };
 
-var toggleContentSort = function() {
+var toggleContentSort = function () {
 	contentSort = $("#toggleContentSort").val();
 	
 	$.cookie("contentSort", contentSort);
 	updateSharesArray();
 };
 
-var muteConversation = function() {
+var muteConversation = function () {
 	enableOverlay();
 	setReadState(2);
 	
@@ -62,6 +62,18 @@ var muteConversation = function() {
 	disableOverlay();	
 };
 
+var editComment = function (commentId) {
+	enableOverlay();
+	
+	//fill in these values to the edit comment form
+	$("#edit_comment").attr("action", "/comments/"+commentId);
+	$("#edit_form_comment_id").val(commentId);
+	$("#edit_form_comment_text").val($("#comment"+commentId+"_text").text());
+
+	//open the modal
+	$("#editComment-modal-content").modal("show");
+};
+
 var updateSharesArray = function() {
 	resetAppState();
 	enableOverlay();
@@ -73,7 +85,7 @@ var updateSharesArray = function() {
 			"content_sort" : contentSort,
 			"content_layout" : contentLayout
 		},
-		success: function(data, textStatus, jqXHR) {
+		success: function (data, textStatus, jqXHR) {
 			shares = data;
 			shares_unread = shares.length;
 			document.title = "Amplifize | Great conversation goes best with great content ("+shares_unread+")";
@@ -96,7 +108,7 @@ var updateSharesArray = function() {
 	});
 };
 
-var setReadState = function(readState) {
+var setReadState = function (readState) {
 	if(1 == readState) {
 		shares[position]["read_state"] = 1;
 
@@ -156,19 +168,6 @@ var openNewWindow = function() {
 	if(current_share) {
 		window.open(current_share.url);
 	}
-};
-
-var followUser = function(userId) {
-	$.ajax({
-		url: '/follows/'+userId+'/add',
-		success: function(data, textStatus, jqXHR) {
-			$('.followUser_'+userId).html('Followed!');
-		},
-		error: function(xhr, text, error) {
-			alert(error);
-			alert(text);
-		}
-	});
 };
 
 var clearContent = function() {
@@ -263,13 +262,17 @@ var openPost = function(shareId) {
 			var scrollNode = null;
 			for(var i = 0; i < data.comments.length; i++) {
 				var comment = data.comments[i];
-				var followsText = '';
-				if ($.inArray(comment.user.id, all_follows) == -1) {
-					followsText = ' (<span class="followUser_'+comment.user.id+'"><a href="" onclick="followUser('+comment.user.id+');return false;">Follow</a></span>)';
-				}
+
+                var editText = "";
+                if(comment.user.id == currentUserId) {
+                    editText = "<a href=\"#\" onclick=\"editComment("+comment.id+")\"data-toggle=\"modal\">Edit comment</a>";
+                }
+
 				var username = null == comment.user.display_name ? comment.user.email : comment.user.display_name;
-				$('#popup_commentThread tr:last').after('<tr class="commentInstance"><td><p class="commentAuthor">'+username+followsText+' replied '+prettyDate(dateFormat(comment.created_at, "isoDateTime", false))+':</p></span><p class="commentText">'+comment.comment_text.split("\n").join("<br />")+'</p></td></tr>');
-				if(null === scrollNode && comment.created_at > shares[position]["last_updated_at"]) {
+
+                $('#popup_commentThread tr:last').after('<tr class="commentInstance"><td><p class="commentAuthor">'+username+' replied '+prettyDate(dateFormat(comment.created_at, "isoDateTime", false))+': '+editText+'</p></span><p id="comment'+comment.id+'_text" class="commentText">'+comment.comment_text.split("\n").join("<br />")+'</p></td></tr>');
+
+                if(null === scrollNode && comment.created_at > current_share.updated_at) {
 					scrollNode = $("#popup_commentThread tr:last");
 				}
 			}
@@ -343,14 +346,16 @@ var updateShareContent = function(shareId) {
 				var scrollNode = null;
 				for(var i = 0; i < data.comments.length; i++) {
 					var comment = data.comments[i];
-					var followsText = '';
-					if ($.inArray(comment.user.id, all_follows) == -1) {
-						followsText = ' (<span class="followUser_'+comment.user.id+'"><a href="" onclick="followUser('+comment.user.id+');return false;">Follow</a></span>)';
-					}
+					
+    				var editText = "";
+	                if(comment.user.id == currentUserId) {
+	                    editText = "<a href=\"#\" onclick=\"editComment("+comment.id+")\"data-toggle=\"modal\">Edit comment</a>";
+	                }
+					
 					var username = null == comment.user.display_name ? comment.user.email : comment.user.display_name;
-					$('#commentThread tr:last').after('<tr class="commentInstance"><td><p class="commentAuthor">'+username+followsText+' replied '+prettyDate(dateFormat(comment.created_at, "isoDateTime", false))+': </p></span><p class="commentText">'+comment.comment_text+'</p></td></tr>');
+					$('#commentThread tr:last').after('<tr class="commentInstance"><td><p class="commentAuthor">'+username+' replied '+prettyDate(dateFormat(comment.created_at, "isoDateTime", false))+': '+editText+'</p></span><p id="comment'+comment.id+'_text" class="commentText">'+comment.comment_text.split("\n").join("<br />")+'</p></td></tr>');
 
-					if(null === scrollNode && comment.created_at > shares[position]["last_updated_at"]) {
+					if(null === scrollNode && comment.created_at > current_share.updated_at) {
 						scrollNode = $("#commentThread tr:last");
 					}
 				}
@@ -382,6 +387,11 @@ $(document).ready(function() {
 	  setTimeout(function(){$("#comment_comment_text").focus();}, 250);
 	});
 
+	$('#editComment-modal-content').bind('show', function () {
+		setTimeout(function(){$("#edit_form_comment_text").focus();}, 250);
+		disableOverlay();
+	});
+
 	$("#postPopup-modal-content").bind('show', function() {
 		$("#postPopup-modal-content .modal-body").animate({scrollTop: 0});
 	});
@@ -397,13 +407,34 @@ $(document).ready(function() {
 
 		var comment = data;
 		var username = null == comment.user.display_name ? comment.user.email : comment.user.display_name;
-		$('#commentThread tr:last').after('<tr class="commentInstance"><td><p class="commentAuthor">'+username+' replied '+prettyDate(dateFormat(new Date(), "isoDateTime",false))+':</p></span><p class="commentText">'+comment.comment_text+'</p></td></tr>');
-		$('#popup_commentThread tr:last').after('<tr class="commentInstance"><td><p class="commentAuthor">'+username+' replied '+prettyDate(dateFormat(new Date(), "isoDateTime", false))+':</p></span><p class="commentText">'+comment.comment_text.split("\n").join("<br />")+'</p></td></tr>');
+		var editText = "<a href=\"#\" onclick=\"editComment("+comment.id+")\"data-toggle=\"modal\">Edit comment</a>";
+
+		$('#commentThread tr:last').after('<tr id="" class="commentInstance"><td><p class="commentAuthor">'+username+' replied '+prettyDate(dateFormat(new Date(), "isoDateTime",false))+': '+editText+'</p></span><p id="comment'+comment.id+'_text" class="commentText">'+comment.comment_text.split("\n").join("<br />")+'</p></td></tr>');
+		$('#popup_commentThread tr:last').after('<tr id="" class="commentInstance"><td><p class="commentAuthor">'+username+' replied '+prettyDate(dateFormat(new Date(), "isoDateTime", false))+':</p></span><p id="comment'+comment.id+'_text" class="commentText">'+comment.comment_text.split("\n").join("<br />")+'</p></td></tr>');
 
 		disableOverlay();
 	});
-
+	
 	$('form#new_comment').bind("ajax:failure", function(data, status, xhr) {
+		//TODO: log error
+		disableOverlay();
+	});
+	
+	$('form#edit_comment').bind("ajax:success", function(status, data, xhr) {
+		$("#editComment-modal-content").modal("hide");
+		
+		//empty out the values;
+		$("#edit_form_comment_id").val('');
+		$("#edit_form_comment_text").val('');
+		$("#edit_comment").attr("action", "");
+		
+		//update the value of the comment itself
+		$("#comment"+data.id+"_text").text(data.comment_text.split("\n").join("<br />"));
+		
+		disableOverlay();
+	});
+	
+	$('form#edit_comment').bind("ajax:failure", function(status, data, xhr) {
 		//TODO: log error
 		disableOverlay();
 	});

@@ -5,7 +5,6 @@
 <% content_for :javascripts do %>
 	<%= javascript_include_tag "search", "jquery.selectbox-0.2.min", "pretty-date" %>
 	<script type="text/javascript">
-		var all_follows = <%= @all_follows %>;
 		document.title = "Amplifize | Great conversation goes best with great content (<%= @shares.length %>)";
 	</script>
 <% end %>

@@ -3,8 +3,6 @@ class CreateFeedsUsers < ActiveRecord::Migration
     create_table :feeds_users, :id => false do |t|
       t.references :feed
       t.references :user
-
-      t.timestamps
     end
   end
 

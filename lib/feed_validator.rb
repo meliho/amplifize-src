@@ -45,7 +45,7 @@ class FeedValidator
     options[:on_success] = lambda {|url, feed_data| urls << feed_data.feed_url }
     options[:max_redirects] = 5
 
-    Feedzirra::Feed.fetch_and_parse(url, options)
+    Feedjira::Feed.fetch_and_parse(url, options)
     
     urls
   end

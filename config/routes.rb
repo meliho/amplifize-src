@@ -35,11 +35,6 @@ Amplifize::Application.routes.draw do
   match '/post_users/:post_id/read_state/:state', :controller => 'post_users', :action => 'set_read_state'
   match '/share_users/:share_id/read_state/:state', :controller => 'share_users', :action => 'set_read_state'
 
-  match '/onboarding/feeds', :controller => 'onboarding', :action => 'import', :as => :onboarding_step_1
-  match '/onboarding/friends', :controller => 'onboarding', :action => 'find_friends'
-  match '/onboarding/profile', :controller => 'onboarding', :action => 'setup_profile'
-  match '/onboarding/the-rest', :controller => 'onboarding', :action => 'the_rest'
-
   match '/tags/:tag_name/feeds', :controller => 'tags', :action => 'get_feeds'
 
   resources :users do
@@ -65,11 +60,8 @@ Amplifize::Application.routes.draw do
   match '/invite/respond/:invite_id' => 'invite#respond', :as => :invite_respond
 
   match '/about' => 'home#about', :as => :about
-  match '/about/team' => 'home#team'
-  match '/about/why-amplifize' => 'home#why_amplifize'
   match '/contact' => 'home#contact', :as => :contact
   match '/terms' => 'home#terms', :as => :terms
-  match '/faq' => 'home#faq', :as => :faq
   match '/privacy' => 'home#privacy', :as => :privacy
 
   resources :users, :user_sessions, :feeds, :posts, :shares, :comments, :tags, :invites, :password_resets

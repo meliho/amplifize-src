@@ -10,6 +10,7 @@
     	$.ajaxSettings.dataType = "json";
     
     	//application state
+		var currentUserId = <%= current_user.id %>;
     	var contentOrder = $.cookie("contentOrder") ? $.cookie("contentOrder") : "newestFirst";
     	var contentLayout = $.cookie("contentLayout") ? $.cookie("contentLayout") : "postView";
     	var contentSort = $.cookie("contentSort") ? $.cookie("contentSort") : "unreadOnly";
@@ -52,7 +53,6 @@
 		<%= yield %>
       	<div class="clear"></div>
     </div>
-	<%= render 'general/footer' %>
 	<div id="overlay">
 	    <div>
 	          <p>Loading</p>

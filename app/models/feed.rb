@@ -187,7 +187,7 @@ class Feed < ActiveRecord::Base
 
   # if self.feed_type == FEED_TYPE_RSS
   # if self.title.nil?
-  # #feed = Feedzirra::Feed.fetch_and_parse(self.url)
+  # #feed = Feedjira::Feed.fetch_and_parse(self.url)
   # if feed.nil? or feed.is_a? Fixnum then
   # return false
   # else

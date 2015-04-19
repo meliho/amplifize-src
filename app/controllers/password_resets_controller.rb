@@ -10,7 +10,7 @@ class PasswordResetsController < ApplicationController
     @user = User.find_by_email(params[:email])  
     
     if @user  
-      @user.deliver_password_reset_instructions!  
+      @user.deliver_password_reset_instructions!
       redirect_to root_url
     else
       #TODO: Handle the error case here
