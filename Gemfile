@@ -13,17 +13,8 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
-
 # To use Jbuilder templates for JSON
 gem 'jbuilder'
-
-# To use debugger
-group :development, :test do
-#  gem 'debugger'
-  gem "query_reviewer", :github => "nesquena/query_reviewer"
-end
 
 gem 'authlogic'
 
@@ -38,13 +29,9 @@ gem "daemons"
 gem 'whenever'
 gem 'ruby-readability'
 
-#gem 'execjs'
-#gem 'therubyracer', '0.10.2', :platforms => :ruby
-
 gem 'rails3-jquery-autocomplete'
 gem 'nifty-generators'
 
 group :production do
   gem 'newrelic_rpm'
 end
-
