@@ -15,15 +15,11 @@ end
 
 # To use Jbuilder templates for JSON
 gem 'jbuilder'
-
+gem 'execjs'
+gem 'therubyracer'
 gem 'authlogic'
 
 gem 'feedjira'
-
-#gem "feedzirra", :path => "vendor/feedzirra"
-#gem 'foreigner'
-#gem 'opml', :path => "vendor/opml"
-#gem 'loofah'
 
 gem 'delayed_job_active_record'
 gem "daemons"

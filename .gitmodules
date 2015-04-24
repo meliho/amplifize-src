@@ -1,3 +1,0 @@
-[submodule "vendor/opml"]
-	path = vendor/opml
-	url = git@github.com:Amplifize/opml.git
