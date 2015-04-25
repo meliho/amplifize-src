@@ -81,7 +81,7 @@ Amplifize::Application.configure do
     :password => "b1gFi$hBiGp0Nd",
     :domain => "amplifize.com",
     :address => "smtp.sendgrid.net",
-    :port => 587,
+    :port => 25,
     :authentication => :plain,
     :enable_starttls_auto => true
   }
