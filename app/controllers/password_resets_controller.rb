@@ -35,7 +35,7 @@ class PasswordResetsController < ApplicationController
   
   private  
   def load_user_using_perishable_token  
-    @user = User.find_using_perishable_token(params[:id])  
+    @user = User.find_using_perishable_token(params[:id], 2.hours)  
     unless @user  
       redirect_to root_url  
     end  
