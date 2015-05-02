@@ -9,6 +9,14 @@ class SharesController < ApplicationController
     end
   end
 
+  def add_by_link
+    share = Share.add_by_link(params[:summary], params[:url], current_user.id)
+
+    respond_to do |format|
+      format.js {render :json => share }
+    end
+  end
+
   def add_remote
     render :content_type => 'application/javascript'
   end
