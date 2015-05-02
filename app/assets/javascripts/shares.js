@@ -311,20 +311,29 @@ var updateShareContent = function(shareId) {
 				$("#sharedDate").html(dateFormat(current_share.created_at, "mmmm dS", false));
 				$("#conversationStarter").html(current_share.summary);	
 
-				if (typeof(current_post.feed) != "undefined") {
-					$("#feedTitle").html('<a href="'+current_post.feed.site_url+'" target="_blank">'+current_post.feed.title+'</a>');
-				}
+				if (typeof(current_post) != "undefined") {
+					if (typeof(current_post.feed) != "undefined") {
+						$("#feedTitle").html('<a href="'+current_post.feed.site_url+'" target="_blank">'+current_post.feed.title+'</a>');
+					}
 
-				$("#contentTitle").html('<p><a href="'+current_post.url+'" target="_blank">'+current_post.title+'</a></p>');
-				$("#contentPublishDate").html("Written on "+dateFormat(current_post.published_at, "dddd, mmmm dS, yyyy, h:MM:ss TT", false));
+					$("#contentTitle").html('<p><a href="'+current_post.url+'" target="_blank">'+current_post.title+'</a></p>');
+					$("#contentPublishDate").html("Written on "+dateFormat(current_post.published_at, "dddd, mmmm dS, yyyy, h:MM:ss TT", false));
 				
-				if(current_post.author) {
-					$("#contentAuthor").html(" by "+current_post.author+" ");
+					if(current_post.author) {
+						$("#contentAuthor").html(" by "+current_post.author+" ");
+					} else {
+						$("#contentAuthor").html("");
+					}
+
+					$("#contentBody").html(current_post.content);
 				} else {
+					$("#feedTitle").html("a post-less conversation");
+					$("#contentTitle").html("");
+					$("#contentPublishDate").html("");
 					$("#contentAuthor").html("");
+					$("#contentBody").html("");
 				}
 				
-				$("#contentBody").html(current_post.content);
 				$("#commentThread").find("tr:gt(0)").remove();
 
 				var scrollNode = null;

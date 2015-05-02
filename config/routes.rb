@@ -54,6 +54,7 @@ Amplifize::Application.routes.draw do
 
   #share actions
   match '/shares/add/' => 'shares#add', :as => :shares_add
+  match '/shares/add-by-link' => 'shares#add_by_link', :as => :shares_add_by_link
 
   #invite actions
   match '/invite/create' => 'invite#create', :as => :invite_create

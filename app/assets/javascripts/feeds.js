@@ -333,17 +333,6 @@ $(document).ready(function() {
 		$("#postPopup-modal-content .modal-body").animate({scrollTop: 0});
 	});
 
-	$('form#new_feed').bind("ajax:success", function(data, status, xhr) {
-		$('#feed_url').val('');
-		$('#feed_tags').val('');
-
-		$('#addFeed-modal-content').modal('hide');
-	});
-
-	$('form#new_feed').bind("ajax:failure", function(data, status, xhr) {
-		alert(status);
-	});
-
 	$('form#addShareForm').bind("ajax:success", function(data, status, xhr) {
 		$("#summary").val('');
 		$('#addShare-modal-content').modal('hide');
@@ -351,7 +340,8 @@ $(document).ready(function() {
 	});
 
 	$('form#addShareForm').bind("ajax:failure", function(data, status, xhr) {
-		alert(status);
+		//TODO: Log this
+		//alert(status);
 	});
 
 	$('#filterContent-modal-content').bind('show', function () {

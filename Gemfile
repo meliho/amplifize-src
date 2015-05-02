@@ -13,6 +13,7 @@ gem 'thinking-sphinx'
 gem 'authlogic'
 
 gem 'feedjira'
+gem 'nokogiri'
 
 gem 'delayed_job_active_record'
 gem "daemons"

@@ -41,6 +41,23 @@ class Share < ActiveRecord::Base
     share
   end
   
+  def self.add_by_link(summary, url, user_id)
+    if url.include? "http"
+      page = Nokogiri::HTML(open(url))
+      
+      if url.include? "medium.com"
+        page_text = page.css('.section-content')[0].text
+      else
+        page_text = page.css('body')[0].text
+      end
+
+      self.add_ext(summary, url, page.css('title')[0].text, page_text, user_id)
+    else
+      self.add(summary, nil, user_id)
+    end
+    
+  end
+  
   def self.add_ext(summary, url, post_title, post_text, user_id)
     # create post
     post = Post.create(
