@@ -78,7 +78,7 @@ Amplifize::Application.configure do
   
   config.action_mailer.smtp_settings = {
     :user_name => "amplifize",
-    :password => "b1gFi$hBiGp0Nd",
+    :password => "b1gFi$hBiGp0Nd!",
     :domain => "amplifize.com",
     :address => "smtp.sendgrid.net",
     :port => 25,
