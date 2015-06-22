@@ -1,3 +1,6 @@
+require 'open-uri'
+require 'openssl'
+
 class Share < ActiveRecord::Base
   attr_accessible :post_id, :user_id, :summary
 
@@ -5,7 +8,9 @@ class Share < ActiveRecord::Base
   
   belongs_to :user
   belongs_to :post
-  
+
+  OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+
   def self.add(summary, post_id, user_id)
     #Step 1 generate the share
     share = Share.create(
@@ -43,7 +48,7 @@ class Share < ActiveRecord::Base
   
   def self.add_by_link(summary, url, user_id)
     if url.include? "http"
-      page = Nokogiri::HTML(open(url))
+      page = Nokogiri::HTML(open(url).read)
       
       if url.include? "medium.com"
         page_text = page.css('.section-content')[0].text
