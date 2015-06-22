@@ -1,12 +1,15 @@
 require 'readability'
 require 'open-uri'
+require 'openssl'
 
 # Class for handling actions from browser bookmarklets
 # Calls to this controller will likely be XDR
 # or JSONP and ar eintended for use with a single access token
 class BookmarkletController < ApplicationController
   before_filter :require_user
-  
+
+  OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE    
+    
   def single_access_allowed?
     true
   end
@@ -54,7 +57,7 @@ class BookmarkletController < ApplicationController
   # to do_share method for applying the share
   def self.do_fetch_and_share(url,comment,title,user)
     puts "Running Fetch and Share for URL #{url}"
-    begin  
+    begin
       content = open(url).read
     rescue
       content = ''
