@@ -1,7 +1,10 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.18'
+gem 'rails', '3.2.22.2'
+
 gem 'mysql2', '0.3.14'
+gem 'foreigner'
+
 gem 'jquery-rails'
 gem 'thinking-sphinx'
 
@@ -21,7 +24,6 @@ gem 'authlogic'
 gem 'feedjira'
 
 #gem "feedzirra", :path => "vendor/feedzirra"
-#gem 'foreigner'
 #gem 'opml', :path => "vendor/opml"
 #gem 'loofah'
 
