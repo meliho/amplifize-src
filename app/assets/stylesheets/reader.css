@@ -8,19 +8,9 @@
   margin: 0 auto;
 }
 
-#contentViewOptions,
-#contentStateOptions {
-  float: left;
-  padding-top: 10px;
-  padding-bottom: 30px;
-}
-
 #contentViewOptions {
+	padding: 0 0 20px 6px;
 	width: 680px;
-}
-
-#contentStateOptions {
-	margin-left: 
 }
 
 .subNavItem {
@@ -32,7 +22,11 @@
 #previousContent, #nextContent {
   float: left;
   margin-right: 20px;
-  margin-top: 8px;
+  color: black;
+}
+
+#previousContent {
+	margin-left: 25%;
 }
 
 .navLabel {
@@ -69,9 +63,31 @@
 /* BEGINNING OF SUB-NAVIGATION SECTION */
 
 #contentNavigation {
-	float: right;
+	position:fixed;
+	bottom:0;
+	left:0;
+	
+	width: 100%;
+	
+	background-color: #072229;
+	
+	padding: 10px 0px 10px 20px;
 }
 
+#contentNavigation div.navTab {
+	text-align: center;
+	
+	display: block;
+
+	float: left;
+	width: 20%;
+	margin: 0;
+}
+
+div.navTab a,
+div.navTab a:visited {
+	color: #fff;
+}
 /* END OF SUB-NAVIGATION SECTION */
 
 /* CONTENT SECTION */
@@ -251,31 +267,8 @@
 	font-size: 12px;
 }
 
-.navTab {
-	width: 65px;
-	height: 57px;
-	margin-top: 10px;
-
-	text-align: center;
-
-	color: #fff;
-	
-	float: left;
-	display: block;
-}
-
 .contentOptionText {
 	visibility: hidden;
-}
-
-.navTab:hover {
-	text-decoration: none;
-	background-color: #4ac36c;
-	border-radius: 5px;
-}
-
-.navTab:hover .contentOptionText {
-	visibility: visible;
 }
 
 .popup_navTab {
@@ -490,3 +483,10 @@
 	color: #737373;
 	line-height: 20px;
 }
+
+#sharePostFlyout,
+#commentPostFlyout {
+	visibility: hidden;
+	display:none;
+}
+

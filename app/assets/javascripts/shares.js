@@ -3,6 +3,24 @@ var shares;
 var position = 0;
 var shares_unread = 0;
 
+var loadFlyOut = function () {
+	$("#commentPostFlyout").css("visibility", "visible").css("display", "block");
+	$("#commentContentOption").css("background-color", "#4ac36c");
+	$("#footer").css("margin-bottom", "240px");
+	
+	setTimeout(function(){$("#comment_comment_text").focus();}, 250);
+	
+	return false;
+};
+
+var hideFlyOut = function () {
+	$("#commentPostFlyout").css("visibility", "hidden").css("display", "none");
+	$("#commentContentOption").css("background-color", "inherit");
+	$("#footer").css("margin-bottom", "45px");
+	
+	return false;
+};
+
 var resetAppState = function () {
 	current_share = null;
 	position = 0;
@@ -167,9 +185,8 @@ var clearContent = function() {
 };
 
 var updateTitleContent = function() {
+	$(".postViewOnly").css("visibility", "hidden");
 	$("#contentMetadata").css("visibility", "hidden").css("display", "none");
-	$("#contentStateOptions").css("visibility", "hidden");
-	$("#contentOptions").css("visibility", "hidden");
 	$("#shareInfo").css("visibility", "hidden").css("display", "none");
 	$("#contentSourceSite").css("visibility", "hidden").css("display", "none");
 
@@ -280,9 +297,8 @@ var updateShareContent = function(shareId) {
 	if(shareId["share_id"]) {
 		$("#contentBody").html('');
 		
+		$(".postViewOnly").css("visibility", "visible");
 		$("#contentMetadata").css("visibility", "visible").css("display", "block");
-		$("#contentStateOptions").css("visibility", "visible");
-		$("#contentOptions").css("visibility", "visible");
 		$("#shareInfo").css("visibility", "visible").css("display", "block");
 		$("#contentSourceSite").css("visibility", "visible").css("display", "block");
 		
@@ -394,6 +410,7 @@ $(document).ready(function() {
 	});
 
 	$('form#new_comment').bind("ajax:success", function(status, data, xhr) {
+		hideFlyOut();
 		$("#addComment-modal-content").modal("hide");
 		$("#comment_comment_text").val('');
 

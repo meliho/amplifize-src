@@ -35,34 +35,8 @@
 		</div>
 		<div class="clear"></div>
 	</div>
-	<div id="contentStateOptions">
-        <div id="contentOptions">
-        	<a class="navTab" href="#addComment-modal-content" data-toggle="modal">
-          		<div class="contentOptionBackground" style="background-position:-7px bottom;"></div>
-          		<span class="contentOptionText">Comment</span>
-          	</a>
-          	<a href="#" onclick="setReadState(1);" class="navTab">
-          		<div class="contentOptionBackground2" style="background-position:-408px;"></div>
-          		<span class="contentOptionText" style="padding-left:3px;">Read later</span>
-          	</a>
-          	<a href="#" onclick="setReadState(3);return false;" class="navTab">
-          		<div class="contentOptionBackgroundStar"></div>
-          		<span class="contentOptionText">Favorite</span>
-          	</a>
-        	<a href="#" class="navTab confirm-delete">
-        		<div class="contentOptionBackground" style="background-position:-39px bottom;"></div>
-        		<span class="contentOptionText">Mute</span>
-        	</a>
-        </div>
-      	<div class="clear"></div>
-	</div>
 	<div class="clear"></div>
 <% end %>
-<div id="contentNavigation">
-	<a href="#" onclick="downPost();" id="previousContent" class="btn" title="Previous content">&lt;</a>
-	<a href="#" onclick="upPost();" id="nextContent" class="btn" title="Next content">&gt;</a>
-	<div class="clear"></div>
-</div>
 <div id="source_content">
 	<div id="shareInfo">
 		<table id="commentThread">
@@ -81,6 +55,29 @@
 		<p id="contentInfoLine"><span id="contentPublishDate"></span><span id="contentArthur"></span></p>
 	</div>
 	<div id="contentBody">
+	</div>
+</div>
+
+<div id="contentNavigation">
+	<div id="commentContentOption" class="navTab postViewOnly" style="padding-top:5px;">
+      	<a href="#" onclick="loadFlyOut();return false;">Add to the conversation</a>
+	</div>
+	<div class="navTab postViewOnly" style="padding-top:5px;">
+      	<a href="#" onclick="setReadState(1);return false;" class="navTab">Read conversation later</a>
+	</div>
+	<div class="navTab postViewOnly" style="padding-top:5px;">
+      	<a href="#" onclick="setReadState(3);return false;" class="navTab">Favorite conversation</a>
+	</div>
+	<div class="navTab postViewOnly" style="padding-top:5px;">
+    	<a href="#" class="confirm-delete">Mute the conversation</a>
+	</div>
+	<div class="navTab">
+		<a href="#" onclick="downPost();" id="previousContent" class="btn" title="Previous content">&lt;</a>
+		<a href="#" onclick="upPost();" id="nextContent" class="btn" title="Next content">&gt;</a>
+	</div>
+	<div class="clear"></div>
+	<div id="commentPostFlyout">
+		<%= render 'comments/form' %>
 	</div>
 </div>
 

@@ -1,19 +1,18 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.18'
+gem 'rails', '3.2.22.2'
 
 gem 'mysql2', '0.3.14'
 gem 'foreigner'
 
 gem 'jquery-rails'
-gem 'jbuilder'
-
 gem 'thinking-sphinx'
+
+gem 'jbuilder'
 
 gem 'authlogic'
 
 gem 'feedjira'
-gem 'nokogiri'
 
 gem 'delayed_job_active_record'
 gem "daemons"

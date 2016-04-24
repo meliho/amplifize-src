@@ -3,6 +3,24 @@ var posts = undefined;
 var position = 0;
 var posts_unread = 0;
 
+var loadFlyOut = function () {
+	$("#sharePostFlyout").css("visibility", "visible").css("display", "block");
+	$("#shareContentOption").css("background-color", "#4ac36c");
+	$("#footer").css("margin-bottom", "240px");
+
+	setTimeout(function(){$("#summary").focus();}, 250);
+
+	return false;
+};
+
+var hideFlyOut = function () {
+	$("#sharePostFlyout").css("visibility", "hidden").css("display", "none");
+	$("#shareContentOption").css("background-color", "inherit");
+	$("#footer").css("margin-bottom", "45px");
+	
+	return false;
+};
+
 var resetAppState = function () {
 	current_post = undefined;
 	position = 0;
@@ -177,9 +195,9 @@ var updatePostsArray = function() {
 };
 
 var updateTitleContent = function() {
+	$(".postViewOnly").css("visibility", "hidden");
+	$("#contentSourceSite").css("visibility", "visible").css("display", "block");
 	$("#contentMetadata").css("visibility", "hidden").css("display", "none");
-	$("#contentStateOptions").css("visibility", "hidden");
-	$("#contentOptions").css("visibility", "hidden");
 
 	current_post = undefined;
 	
@@ -257,9 +275,9 @@ var updatePostContent = function(postId) {
 	if (postId["post_id"]) {
 		$("#contentBody").html('');
 		
+		$(".postViewOnly").css("visibility", "visible");
+		$("#contentSourceSite").css("visibility", "visible").css("display", "block");
 		$("#contentMetadata").css("visibility", "visible").css("display", "block");
-		$("#contentStateOptions").css("visibility", "visible");
-		$("#contentOptions").css("visibility", "visible");
 
 		//empty share comment on new post
 		$('#summary').val('');
@@ -277,7 +295,7 @@ var updatePostContent = function(postId) {
 					setReadState(0);
 					
 					$("#feedUnreadCount").html(--posts_unread);
-					document.title = "Amplifize | Great conversation goes best with great content ("+posts_unread+")"
+					document.title = "Amplifize | Great conversation goes best with great content ("+posts_unread+")";
 				}
 
 				$("#feedTitle").html('<a href="'+current_post.feed.site_url+'" target="_blank">'+current_post.feed.title+'</a>');
@@ -299,7 +317,7 @@ var updatePostContent = function(postId) {
 				disableOverlay();
 			},
 			dataType: "json"
-		})
+		});
 	} else {
 		clearContent();
 	}
@@ -333,10 +351,18 @@ $(document).ready(function() {
 		$("#postPopup-modal-content .modal-body").animate({scrollTop: 0});
 	});
 
+	$('#addShare-modal-content').bind('show', function () {
+	  setTimeout(function(){$("#summary").focus();}, 250);
+	});
+
+	$('form#new_feed').bind("ajax:failure", function(data, status, xhr) {
+		alert(status);
+	});
+
 	$('form#addShareForm').bind("ajax:success", function(data, status, xhr) {
 		$("#summary").val('');
 		$('#addShare-modal-content').modal('hide');
-		mixpanel.track("Share a post");
+		hideFlyOut();
 	});
 
 	$('form#addShareForm').bind("ajax:failure", function(data, status, xhr) {
@@ -349,9 +375,6 @@ $(document).ready(function() {
 	  setTimeout(function(){$("#newFilter").focus();}, 250);
 	});
 
-	$('#addShare-modal-content').bind('show', function () {
-	  setTimeout(function(){$("#summary").focus();}, 250);
-	});
 
 	$("#toggleContentSelect").val(contentOrder).selectbox();
 	$("#toggleContentLayout").val(contentLayout).selectbox();
