@@ -70,6 +70,6 @@ Amplifize::Application.routes.draw do
   root :to => "home#index"
 
   match '/googleaf23107439d49301.html' => 'home#google_verification'
-  match '/9E92D13C0B480E503118D318B4FA14BB.txt' => 'home#cert_verification'
+  match '/EA7D0B988A3987A3DE173BDF8E3A4015.txt' => 'home#cert_verification'
 
 end
