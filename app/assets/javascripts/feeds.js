@@ -17,7 +17,7 @@ var hideFlyOut = function () {
 	$("#sharePostFlyout").css("visibility", "hidden").css("display", "none");
 	$("#shareContentOption").css("background-color", "inherit");
 	$("#footer").css("margin-bottom", "45px");
-	
+
 	return false;
 };
 
@@ -32,7 +32,7 @@ var setNewFilter = function() {
 	$("#popup_currentTag").html("the "+currentFilter+" tag");
 	updatePostsArray();
 	$("#filterContent-modal-content").modal("hide");
-	
+
 	return false;
 };
 
@@ -42,7 +42,7 @@ var clearFilter = function() {
 	$("#popup_currentTag").html("all tags");
 	updatePostsArray();
 	$("#filterContent-modal-content").modal("hide");
-	
+
 	return false;
 };
 
@@ -63,21 +63,21 @@ var toggleContentOrder = function() {
 
 var toggleContentLayout = function() {
 	contentLayout = $("#toggleContentLayout").val();
-	
+
 	$.cookie("contentLayout", contentLayout);
 	updatePostsArray();
 };
 
 var toggleContentSort = function() {
 	contentSort = $("#toggleContentSort").val();
-	
+
 	$.cookie("contentSort", contentSort);
 	updatePostsArray();
 };
 
 var markAllAsRead = function() {
 	enableOverlay();
-	
+
 	$.ajax({
 		url: "/feeds/clear-all",
 		data: "filter="+currentFilter,
@@ -85,7 +85,7 @@ var markAllAsRead = function() {
 			disableOverlay();
 			clearContent();
 
-			$('#confirm-delete-modal').modal('hide');		
+			$('#confirm-delete-modal').modal('hide');
 		},
 		error: function(xhr, text, error) {
 			//TODO: Log this
@@ -98,11 +98,11 @@ var markAllAsRead = function() {
 var setReadState = function(readState) {
 	if(1 == readState) {
 		posts[position]["read_state"] = 1;
-		
+
 		if("titleView" == contentLayout) {
 			$("li#post_"+current_post.id).removeClass("read").addClass("unread");
 		}
-		
+
 		++posts_unread;
 		$("#feedUnreadCount").html(posts_unread);
 		document.title = "Amplifize | Great conversation goes best with great content ("+posts_unread+")"
@@ -118,10 +118,10 @@ var setReadState = function(readState) {
 		},
 		dataType: "json"
 	});
-	
+
 	return false;
 };
-	
+
 var downPost = function() {
 	if(position > 0) {
 		position--;
@@ -133,7 +133,7 @@ var downPost = function() {
 	} else {
 		alert("At the first post");
 	}
-	
+
 	return false;
 };
 
@@ -142,7 +142,7 @@ var openNewWindow = function() {
 		window.open(current_post.url);
 	}
 };
-	
+
 var upPost = function() {
 	if((position+1) < posts.length) {
 		position++;
@@ -162,7 +162,7 @@ var upPost = function() {
 var updatePostsArray = function() {
 	resetAppState();
 	enableOverlay();
-	
+
 	$.ajax({
 		url: "/post_users/",
 		data: {
@@ -180,7 +180,7 @@ var updatePostsArray = function() {
 				clearContent();
 			} else {
 				if("postView" == contentLayout) {
-					updatePostContent(posts[position]);	
+					updatePostContent(posts[position]);
 				} else {
 					updateTitleContent();
 				}
@@ -200,7 +200,7 @@ var updateTitleContent = function() {
 	$("#contentMetadata").css("visibility", "hidden").css("display", "none");
 
 	current_post = undefined;
-	
+
 	$("#feedUnreadCount").html(posts.length);
 	document.title = "Amplifize | Great conversation goes best with great content ("+posts.length+")";
 
@@ -208,14 +208,14 @@ var updateTitleContent = function() {
 	$("#contentBody").append('<ul id="titleList"></ul>');
 	for(var i = 0; i < posts.length; i++) {
 		var readStateClass = posts[i]["read_state"] == 0 ? "read" : "unread";
-		
+
 		$("#titleList").append(
 			'<li id="post_'+posts[i]["post_id"]+'" class="'+readStateClass+'"> ' +
 			'<a href="#" onclick="openPost('+posts[i]["post_id"]+');return false;">'+posts[i]["post_title"]+'</a>'+
 			'<span>From '+posts[i]["feed_title"]+' published on '+dateFormat(posts[i]["published_at"], "dddd, mmmm dS, yyyy, h:MM:ss TT", false)+'</span></li>'
 		);
 	}
-	
+
 	disableOverlay();
 };
 
@@ -227,7 +227,7 @@ var openPost = function(postId) {
 			$('#summary').val('');
 
 			current_post = data;
-			
+
 			for(var i = 0; i < posts.length; i++) {
 				if(postId == posts[i]["post_id"]) {
 					position = i;
@@ -274,7 +274,7 @@ var openPost = function(postId) {
 var updatePostContent = function(postId) {
 	if (postId["post_id"]) {
 		$("#contentBody").html('');
-		
+
 		$(".postViewOnly").css("visibility", "visible");
 		$("#contentSourceSite").css("visibility", "visible").css("display", "block");
 		$("#contentMetadata").css("visibility", "visible").css("display", "block");
@@ -284,16 +284,16 @@ var updatePostContent = function(postId) {
 
 		$.ajax({
 			url: "/posts/"+postId["post_id"],
-			success: function(data, textStatus, jqXHR) {				
+			success: function(data, textStatus, jqXHR) {
 				$("html, body").animate({ scrollTop: 0 }, "fast");
 				$("#contentMetadata").css("visibility", "visible").css("display", "block");
-				
+
 				current_post = data;
 
 				if(1 == posts[position]["read_state"]) {
 					posts[position]["read_state"] = 0;
 					setReadState(0);
-					
+
 					$("#feedUnreadCount").html(--posts_unread);
 					document.title = "Amplifize | Great conversation goes best with great content ("+posts_unread+")";
 				}
@@ -325,7 +325,7 @@ var updatePostContent = function(postId) {
 
 var clearContent = function() {
 	disableOverlay();
-	
+
 	$("#feedTitle").html('');
 	$("#contentRow").html('');
 	$("#contentSummary").html('');
@@ -339,7 +339,7 @@ var clearContent = function() {
 		"<h3>Looks like you've got no more posts to read</h3>" +
 		"<p>It might be time to <a href=\"/onboarding/feeds\">find feeds</a> other amplifizers are subscribed to.</p>"
 	);
-	
+
 	$("#postPopup-modal-content").modal("hide");
 };
 
@@ -380,7 +380,7 @@ $(document).ready(function() {
 	$("#toggleContentLayout").val(contentLayout).selectbox();
 	$("#toggleContentSort").val(contentSort).selectbox();
 	$("#newFilter").selectbox();
-	
+
 	//need to do this to prevent firefox from auto searching on typing
 	jQuery(document).bind('keydown', 'j', function(evt) {
 		return false;
@@ -394,7 +394,7 @@ $(document).ready(function() {
 		return false;
 	});
 
-	
+
 	jQuery(document).bind('keyup', 'j', function(evt) {
 		 upPost();
 		 return false;

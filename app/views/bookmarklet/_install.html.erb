@@ -23,5 +23,5 @@
 		</li>
 
 	</ol>
-	<a class="bookmarklet" href="javascript:(function(){if(window.amplifizeBookmarklet!==undefined){amplifizeBookmarklet();}else{document.body.appendChild(document.createElement('script')).src = 'http://<%= bm_js_host%>/ext/share/prompt/v1/<%= @user.single_access_token%>?url=&#039;+encodeURIComponent(location.href)+&#039;&amp;ts=&#039;+(new Date().getTime());}void(0);})();"><%= bm_msg%></a>
+	<a class="bookmarklet" href="javascript:(function(){if(window.amplifizeBookmarklet!==undefined){amplifizeBookmarklet();}else{document.body.appendChild(document.createElement('script')).src = 'https://<%= bm_js_host%>/ext/share/prompt/v1/<%= @user.single_access_token%>?url=&#039;+encodeURIComponent(location.href)+&#039;&amp;ts=&#039;+(new Date().getTime());}void(0);})();"><%= bm_msg%></a>
 </div>
