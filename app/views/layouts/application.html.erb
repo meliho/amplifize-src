@@ -2,33 +2,19 @@
 <html>
 <head>
   <title>Amplifize | Great conversation goes best with great content</title>
-  <%= stylesheet_link_tag "application", "http://fonts.googleapis.com/css?family=Roboto:400,700,100", "http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,600,700", "jquery.labels" %>
+  <%= stylesheet_link_tag "application", "//fonts.googleapis.com/css?family=Roboto:400,700,100", "//fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,600,700", "jquery.labels" %>
   <%= yield :stylesheets %>
   <%= javascript_include_tag "jquery.min", "jquery_ujs", "bootstrap-dropdown", "jquery.labels" %>
   <%= yield :javascripts %>
   <script type="text/javascript">
   	$.ajaxSettings.dataType = "json";
-  
+
   	$(document).ready(function(){
 		$('#loginLink').bind('click', function () {
 	  		setTimeout(function(){$("#user_session_email").focus();}, 250);
 		});
   	});
   </script>
-  <script type="text/javascript">
-    var fb_param = {};
-    fb_param.pixel_id = '6011328917045';
-    fb_param.value = '0.00';
-    fb_param.currency = 'USD';
-    (function(){
-      var fpw = document.createElement('script');
-      fpw.async = true;
-      fpw.src = '//connect.facebook.net/en_US/fp.js';
-      var ref = document.getElementsByTagName('script')[0];
-      ref.parentNode.insertBefore(fpw, ref);
-    })();
-  </script>
-  <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/offsite_event.php?id=6011328917045&amp;value=0&amp;currency=USD" /></noscript>
   <%= csrf_meta_tag %>
 </head>
 <body>
@@ -38,7 +24,7 @@
 		    	<ul class="nav">
 		    		<li class="active logo"><h1><a href="/">amplifize</a></h1></li>
 		    	</ul>
-		        <% if current_user %> 
+		        <% if current_user %>
 		        <ul class="nav pull-right">
 	    			<li><%= link_to "Front page", :homepage %></li>
 	    			<li><%= link_to "Log out", :logout %></li>
@@ -57,8 +43,8 @@
 	    		<% end %>
 	    		<div class="clear"></div>
 			</div>
-			<div class="clear"></div> 
-	    </header>    
+			<div class="clear"></div>
+	    </header>
 	    <div id="content" style="margin-top: 50px;">
 		    <%= yield %>
 	      	<div class="clear"></div>
