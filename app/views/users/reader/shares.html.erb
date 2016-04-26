@@ -60,7 +60,7 @@
 
 <div id="contentNavigation">
 	<div id="commentContentOption" class="navTab postViewOnly" style="padding-top:5px;">
-      	<a href="#" onclick="loadFlyOut();return false;">Add to the conversation</a>
+			<a href="#addComment-modal-content" data-toggle="modal">Add to the conversation</a>
 	</div>
 	<div class="navTab postViewOnly" style="padding-top:5px;">
       	<a href="#" onclick="setReadState(1);return false;" class="navTab">Read conversation later</a>
@@ -76,9 +76,9 @@
 		<a href="#" onclick="upPost();" id="nextContent" class="btn" title="Next content">&gt;</a>
 	</div>
 	<div class="clear"></div>
-	<div id="commentPostFlyout">
+	<!-- <div id="commentPostFlyout">
 		<%= render 'comments/form' %>
-	</div>
+	</div> -->
 </div>
 
 <div id="addComment-modal-content" class="modal hide" style="z-index:2000;">
@@ -143,7 +143,7 @@
 					</tr>
 				</table>
 			</div>
-			<div id="popup_contentSourceSite">Currently reading <span id="popup_feedTitle"></span> from <span id="popup_currentTag">all tags</span>.</div>
+			<div id="popup_contentSourceSite">Currently reading <span id="popup_feedTitle"></span>.</div>
 			<div id="popup_contentMetadata">
 				<p id="popup_contentInfoLine"><span id="popup_contentPublishDate"></span><span id="popup_contentArthur"></span></p>
 			</div>
@@ -166,5 +166,3 @@
         <a href="javascript:$('#confirm-delete-modal').modal('hide')" class="btn secondary">No</a>
     </div>
 </div>
-
-

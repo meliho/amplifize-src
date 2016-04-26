@@ -1,6 +1,6 @@
 class ShareUsersController < ApplicationController
   before_filter :require_user, :only => [:set_read_state, :retrieve]
-  
+
   def set_read_state
     share_user = ShareUser.find_by_share_id_and_user_id(params[:share_id], current_user.id)
     share_user.read_state = params[:state]
@@ -11,11 +11,11 @@ class ShareUsersController < ApplicationController
       format.js {"{'success': true}"}
     end
   end
-  
+
   def retrieve
     #build the @shares query based on user preferences
     if "titleView" == params[:content_layout]
-      shares = current_user.share_users.select("share_users.*, posts.title AS post_title, users.display_name AS display_name, users.email AS email").joins(:share => [:post, :user])
+      shares = current_user.share_users.select("share_users.*, posts.title AS post_title, users.display_name AS display_name, users.email AS email, shares.summary as summary").joins(:share => [:post, :user])
     else
       shares = current_user.share_users.select("share_users.share_id, share_users.read_state").joins(:share)
     end

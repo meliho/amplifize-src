@@ -200,10 +200,11 @@ var updateTitleContent = function() {
 	for(var i = 0; i < shares.length; i++) {
 		var sharerName = shares[i]["display_name"] ? shares[i]["display_name"] : shares[i]["email"];
 		var readStateClass = shares[i]["read_state"] == 0 ? "read" : "unread";
+		var titleCopy = shares[i]["post_title"] ? shares[i]["post_title"] : shares[i]["summary"];
 
 		$("#titleList").append(
 			'<li id="share_'+shares[i]["share_id"]+'" class="'+readStateClass+'"> ' +
-			'<a href="#" onclick="openPost('+shares[i]["share_id"]+');return false;">'+shares[i]["post_title"]+'</a>'+
+			'<a href="#" onclick="openPost('+shares[i]["share_id"]+');return false;">'+titleCopy+'</a>'+
 			'<span>Shared by '+sharerName+'</span></li>'
 		);
 	}
@@ -244,17 +245,29 @@ var openPost = function(shareId) {
 
 			if(current_share.post.feed) {
 				$("#popup_feedTitle").html('<a href="'+current_share.post.feed.site_url+'" target="_blank">'+current_share.post.feed.title+'</a>');
+				$("#popup_contentSourceSite").css("visibility", "visible");
+			} else {
+				$("#popup_contentSourceSite").css("visibility", "hidden");
+				$("#popup_feedTitle").html('');
 			}
 
-			$("#popup_contentTitle").html('<p><a href="'+current_share.post.url+'" target="_blank">'+current_share.post.title+'</a></p>');
+			if(current_share.post.url) {
+				$("#popup_contentTitle").html('<p><a href="'+current_share.post.url+'" target="_blank">'+current_share.post.title+'</a></p>');
+			} else {
+				$("#popup_contentTitle").html('');
+			}
+
 			if(current_share.post.author) {
 				$("#popup_contentAuthor").html("by "+current_share.post.author+" ");
 			} else {
 				$("#popup_contentAuthor").html("");
 			}
 
-			$("#popup_contentPublishDate").html("Written on "+dateFormat(current_share.post.published_at, "dddd, mmmm dS, yyyy, h:MM:ss TT", false));
-			$("#popup_contentBody").html(current_share.post.content);
+			if (current_share.post.content) {
+				$("#popup_contentBody").html(current_share.post.content);
+				$("#popup_contentPublishDate").html("Written on "+dateFormat(current_share.post.published_at, "dddd, mmmm dS, yyyy, h:MM:ss TT", false));
+			}
+
 			$("#comment_share_id").val(current_share.id);
 
 			$("#popup_commentThread").find("tr:gt(0)").remove();
@@ -262,11 +275,11 @@ var openPost = function(shareId) {
 			var scrollNode = null;
 			for(var i = 0; i < data.comments.length; i++) {
 				var comment = data.comments[i];
+        var editText = "";
 
-                var editText = "";
-                if(comment.user.id == currentUserId) {
-                    editText = "<a href=\"#\" onclick=\"editComment("+comment.id+")\"data-toggle=\"modal\">Edit comment</a>";
-                }
+				if(comment.user.id == currentUserId) {
+          editText = "<a href=\"#\" onclick=\"editComment("+comment.id+")\"data-toggle=\"modal\">Edit comment</a>";
+        }
 
 				var username = null == comment.user.display_name ? comment.user.email : comment.user.display_name;
 
@@ -319,28 +332,27 @@ var updateShareContent = function(shareId) {
 				$("#sharedDate").html(dateFormat(current_share.created_at, "mmmm dS", false));
 				$("#conversationStarter").html(current_share.summary);
 
-				if (typeof(current_post) != "undefined") {
-					if (typeof(current_post.feed) != "undefined") {
-						$("#feedTitle").html('<a href="'+current_post.feed.site_url+'" target="_blank">'+current_post.feed.title+'</a>');
-					}
+				if (typeof(current_post.feed) != "undefined") {
+					$("#feedTitle").html('<a href="'+current_post.feed.site_url+'" target="_blank">'+current_post.feed.title+'</a>');
+					$("#contentSourceSite").css("visibility", "visible");
+				} else {
+					$("#contentSourceSite").css("visibility", "hidden");
+				}
 
+				if(current_post.url) {
 					$("#contentTitle").html('<p><a href="'+current_post.url+'" target="_blank">'+current_post.title+'</a></p>');
 					$("#contentPublishDate").html("Written on "+dateFormat(current_post.published_at, "dddd, mmmm dS, yyyy, h:MM:ss TT", false));
-
-					if(current_post.author) {
-						$("#contentAuthor").html(" by "+current_post.author+" ");
-					} else {
-						$("#contentAuthor").html("");
-					}
-
-					$("#contentBody").html(current_post.content);
 				} else {
-					$("#feedTitle").html("a post-less conversation");
-					$("#contentTitle").html("");
-					$("#contentPublishDate").html("");
-					$("#contentAuthor").html("");
-					$("#contentBody").html("");
+					$("#contentTitle").html('');
 				}
+
+				if(current_post.author) {
+					$("#contentAuthor").html(" by "+current_post.author+" ");
+				} else {
+					$("#contentAuthor").html("");
+				}
+
+				$("#contentBody").html(current_post.content);
 
 				$("#commentThread").find("tr:gt(0)").remove();
 
