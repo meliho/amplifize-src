@@ -12,7 +12,7 @@ gem 'jbuilder'
 
 gem 'authlogic'
 
-gem 'feedjira'
+gem 'feedjira', '1.6.0'
 
 gem 'delayed_job_active_record'
 gem "daemons"
